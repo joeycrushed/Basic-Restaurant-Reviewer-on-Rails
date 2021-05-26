@@ -3,3 +3,15 @@
 <p> <%= @restaurant.address %> </p>
 <p> <%= @restaurant.phone_number %> </p>
 <p> <%= @restaurant.category %> </p>
+
+<h2>Reviews</h2>
+<ul class="list-group">
+  <% @restaurant.reviews.each do |review| %>
+    <li class="list-group-item"><%= review.content %> / Rating - <%= '💥'*review.rating %></li>
+  <% end %>
+</ul>
+<br>
+<%= link_to "Write a review", new_restaurant_review_path(@restaurant.id), class: "btn btn-primary invisible"%>
+<%= render 'form' %>
+
+<%= link_to "Back", restaurants_path %>

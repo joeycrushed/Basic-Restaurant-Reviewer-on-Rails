@@ -1,14 +1,13 @@
 class ReviewsController < ApplicationController
+  before_action :find_restaurant
+
   def new
-    @restaurant = Restaurant.find(params[:restaurant_id])
     @review = Review.new
   end
 
   def create
-    @restaurant = Restaurant.find(params[:restaurant_id])
-    @review = Review.new(review_params)
-    @restaurant = Restaurant.find(params[:restaurant_id])
-    @review.restaurant = @restaurant
+    @review = Review.new(review_params) # new instance of Review that takes the values from the form
+    @review.restaurant = @restaurant # review belongs to restaurant, restaurant has many reviews and this is why we can access the instance of restaurant
     if @review.save
       redirect_to restaurant_path(@restaurant)
     else
@@ -16,10 +15,13 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def find_restaurant
+    @restaurant = Restaurant.find(params[:restaurant_id])
+  end
+
   private
 
   def review_params
     params.require(:review).permit(:content, :rating)
   end
-
 end
